@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    <title>Multiple Components</title>
+    <script src = "../../js/react.min.js"></script>
+    <script src = "../../js/react-dom.min.js"></script>
+    <script src = "../../js/browser.min.js"></script>
+</head>
+<body>
+<div id = "stateImplementation"></div>
+
+
+<script type="text/babel">
+
+    var Comment = React.createClass({
+        getInitialState : function () {
+            return {editing : false}
+        },
+        edit : function () {
+            this.setState({editing : true});
+        },
+        remove : function () {
+            this.props.removingComment(this.props.index);
+        },
+        //adding new comment (parameter 1) at index (parameter 2)
+        save : function () {
+            this.props.addingComment(this.refs.inputText.value, this.props.index);
+            this.setState({editing : false});
+        },
+        primaryform : function() {
+            return (
+                    <div className="commentContainer">
+                        <div className="commentText">{this.props.children}</div>
+                        <button onClick = {this.edit} className="button-primary">Edit</button>
+                        <button onClick = {this.remove} className="button-danger">Remove</button>
+                    </div>
+            );
+        },
+        editform : function() {
+            return (
+                    <div className="commentContainer">
+                        <textarea ref="inputText" defaultValue={this.props.children} name="editForm" id="editForm" cols="1" rows="1"></textarea>
+                        <button onClick={this.save} classname="button-success">Save</button>
+                    </div>
+            );
+        },
+        render : function () {
+            if(this.state.editing) {
+                return this.editform();
+            }
+            else {
+                return this.primaryform();
+            }
+        }
+    })
+
+    //assigning something (component) with values will be done in curly braces
+
+    var Board = React.createClass({
+        getInitialState : function () {
+            return {comments : []};
+        },
+        //adding an all new component/comment
+        add : function (text) {
+            var array = this.state.comments;
+            array.push(text);
+            this.setState({comments: array});
+        },
+        //saving the edited component/comment
+        addComment : function (text, i) {
+            var array = this.state.comments;
+            array[i] = text;
+            this.setState({comments: array});
+        },
+        //removing the component/comment entirely
+        removeComment : function (i) {
+            var array = this.state.comments;
+            array.splice(i, 1);
+            this.setState({comments: array});
+        },
+        //sending functions to 'Comment' component in form of properties
+        getComment : function (text, i) {
+            return (
+                <Comment key = {i} index = {i} addingComment = {this.addComment} removingComment = {this.removeComment}>
+                    {text}
+                </Comment>
+            );
+        },
+        render : function () {
+            return (
+                    <div>
+                        <button onClick={this.add.bind(null, "Default text")} className="button-info create">Add new entry</button>
+                        <div className="board">
+                            {this.state.comments.map(this.getComment)}
+                        </div>
+                    </div>
+            );
+        }
+    })
+
+    ReactDOM.render(<Board/>, document.getElementById('stateImplementation'));
+
+</script>
+</body>
+</html>

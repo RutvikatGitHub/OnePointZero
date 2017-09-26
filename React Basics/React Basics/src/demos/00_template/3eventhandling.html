@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Handling</title>
+    <link rel = "stylesheet" type = "text/css" href="../../css/main.css">
+    <script src = "../../js/react.min.js"></script>
+    <script src = "../../js/react-dom.min.js"></script>
+    <script src = "../../js/browser.min.js"></script>
+</head>
+<body>
+    <div id = eventhandling></div>
+    <script type="text/babel">
+        
+        var Event = React.createClass( {
+            edit : function () {
+                alert("Edit this item");
+            },
+            remove : function () {
+                alert("Remove the item");
+            },
+            render : function () {
+                return (
+                    <div className = "commentContainer">
+                    <div className = "commentText">{this.props.children}</div>
+                    <button onClick={this.edit} className="button-primary">Edit</button>
+                    <button onClick={this.remove} className="button-primary">Remove</button>
+                    </div>
+                );
+            }
+            
+        })
+        ReactDOM.render(
+            <div className="board">
+                <Event>Milk</Event>
+                <Event>Bread</Event>
+                <Event>Biscuits</Event>
+            </div>, document.getElementById('eventhandling')
+        );
+    </script>
+</body>
+</html>

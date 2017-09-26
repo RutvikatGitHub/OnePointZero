@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    <title>Multiple Components</title>
+    <script src = "../../js/react.min.js"></script>
+    <script src = "../../js/react-dom.min.js"></script>
+    <script src = "../../js/browser.min.js"></script>
+</head>
+<body>
+<div id = "stateImplementation"></div>
+
+
+<script type="text/babel">
+
+    var Comment = React.createClass({
+        getInitialState : function () {
+            return {editing : false}
+        },
+        edit : function () {
+            this.setState({editing : true});
+        },
+        remove : function () {
+            alert("Remove yet to implement ;)");
+        },
+        save : function () {
+            var temp = this.refs.inputText.value;
+            console.log("The new value is " + temp);
+            this.setState({editing : false});
+        },
+        primaryform : function() {
+            return (
+                    <div>
+                        <h4>{this.props.children}</h4>
+                        <button onClick = {this.edit}>Edit</button>
+                        <button onClick = {this.remove}>Remove</button>
+                    </div>
+            );
+        },
+        editform : function() {
+            return (
+                    <div>
+                        <textarea ref="inputText" defaultValue={this.props.children} name="editForm" id="editForm" cols="1" rows="1"></textarea>
+                        <button onClick={this.save}>Save</button>
+                    </div>
+            );
+        },
+        render : function () {
+            if(this.state.editing) {
+                return this.editform();
+            }
+            else {
+                return this.primaryform();
+            }
+        }
+    })
+
+    var Board = React.createClass({
+        getInitialState : function () {
+            return {comments : [
+                'Comment number 1',
+                'Comment number 2',
+                'Comment number 3'
+            ]};
+        },
+        
+        render : function () {
+            return (
+                <div>
+                    {
+                        //map in react are used to iterate; here we are using an anonymous function
+                        this.state.comments.map(function (text, i) {
+                            //every comment component must have an identifier - it's referred key in react
+                            return (
+                              <Comment key = {i}>{text}</Comment>
+                            );
+                        })
+                    }
+                </div>
+            );
+        }
+    })
+
+    ReactDOM.render(<Board/>, document.getElementById('stateImplementation'));
+
+</script>
+</body>
+</html>

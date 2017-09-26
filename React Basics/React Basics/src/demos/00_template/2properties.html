@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Properties</title>
+    <script src = "../../js/react.min.js"></script>
+    <script src = "../../js/react-dom.min.js"></script>
+    <script src = "../../js/browser.min.js"></script>
+</head>
+<body>
+<div id = "properties"></div>
+
+<script type="text/babel">
+
+    var PropsComponent = React.createClass ({
+       render : function() {
+           return (
+                <div>
+                    <h2>{this.props.movie}</h2>
+                    <h4>{this.props.genre}</h4>
+                </div>
+                                        `       `
+           );
+       }
+    });
+    ReactDOM.render(<div>
+        <PropsComponent movie = "Avatar" genre = "Action"/>
+        <PropsComponent movie = "A Walk To Remember" genre = "Romance"/>
+        <PropsComponent movie = "Star Trek" genre = "Sci-Fi"/>
+        </div>, document.getElementById('properties'));
+
+
+</script>
+</body>
+</html>
